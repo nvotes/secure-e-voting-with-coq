@@ -7,16 +7,8 @@ let _ =
   let wikSigma = Lib.ElGamalWikstrom.coq_WikstromSigma in
   let wikStatment = Lib.ElGamalWikstrom.coq_WikstromStatment in
   
-  Format.printf "%s\n" (Big_int.string_of_big_int Lib.p);
-  Format.printf "%s\n" (Big_int.string_of_big_int Lib.q);
-
-  let toVector2 = (fun x y ->
-    Lib.Cons (Big_int.big_int_of_string x, (Lib.S Lib.O), Lib.Cons (Big_int.big_int_of_string y, Lib.O, Lib.Nil))
-  ) in
-  
-  let toVector2Ciph = (fun x y z w ->
-    Lib.Cons ((Big_int.big_int_of_string x,Big_int.big_int_of_string y), (Lib.S Lib.O), Lib.Cons ((Big_int.big_int_of_string z, Big_int.big_int_of_string w), Lib.O, Lib.Nil))
-  ) in
+  Format.printf "p = %s\n" (Big_int.string_of_big_int Lib.p);
+  Format.printf "q = %s\n" (Big_int.string_of_big_int Lib.q);
   
   let rec intToNat = (fun i ->
     match i with
@@ -174,7 +166,7 @@ let _ =
   "704536446397905618731694201453313333220794462238339872635529502935816627518720489826000461661881824355742898532418409338876970955062507036770204931935935";
   "1840096081811058601480763297407723127385834950493496104011194881739339809534365210650946928362340554583234872763998117301066568781207071890923274613425082"] in
   
-  let pkFile = BatFile.open_in "pk.json" in 
+  let pkFile = BatFile.open_in "data/pk.json" in 
   let pkstring = BatIO.read_all pkFile in
   let pkjson = Yojson.Basic.from_string pkstring in
   (* Format.printf "Parsed to %a" Yojson.Basic.pp pkjson; *)
@@ -184,10 +176,10 @@ let _ =
 
   let pkgen = jsonToBigint pkgenjson in
   let pk_ = jsonToBigint pkjson in
-  Format.printf "pkgen: %s\n" (Big_int.string_of_big_int pkgen);
+  Format.printf "generator: %s\n" (Big_int.string_of_big_int pkgen);
   Format.printf "pk: %s\n" (Big_int.string_of_big_int pk_);
 
-  let hFile = BatFile.open_in "hs.json" in
+  let hFile = BatFile.open_in "data/hs.json" in
   let hstring = BatIO.read_all hFile in
   let hjson = Yojson.Basic.from_string hstring in
   let hlistjson = Yojson.Basic.Util.to_list hjson in
@@ -200,12 +192,30 @@ let _ =
   Format.printf "h = %s\n" (Big_int.string_of_big_int h_);
   Format.printf "hs: %d\n" (List.length hslist);
 
+  let uFile = BatFile.open_in "data/us.json" in
+  let ustring = BatIO.read_all uFile in
+  let ujson = Yojson.Basic.from_string ustring in
+  let ulistjson = Yojson.Basic.Util.to_list ujson in
+  let ulist = toListOfElements ulistjson in
+  let u_ = toVectorNBig ulist in
+
+  Format.printf "us: %d\n" (List.length ulist);
+
   let cFile = BatFile.open_in "PermutationCommitment01.json" in
   let cstring = BatIO.read_all cFile in
   let cjson = Yojson.Basic.from_string cstring in
   let clistjson = Yojson.Basic.Util.to_list cjson in
   let clist = toListOfElements clistjson in
   let c = toVectorNBig clist in (* PermutationCommitment01.json *)
+
+  let c_File = BatFile.open_in "PermutationCommitment01.json" in
+  let c_string = BatIO.read_all c_File in
+  let c_json = Yojson.Basic.from_string c_string in
+  let c_listjson = Yojson.Basic.Util.to_list c_json in
+  let c_list = toListOfElements c_listjson in
+  let c_ = toVectorNBig clist in
+
+  Format.printf "cs: %d\n" (List.length c_list);
   
   let tFile = BatFile.open_in "PoSCommitment01.json" in
   let tstring = BatIO.read_all tFile in
@@ -218,10 +228,29 @@ let _ =
   let t1Json = List.nth tlistjson 3 in
   let t2Json = List.nth tlistjson 4 in
   let t4Json = List.nth tlistjson 5 in
+
+  let t_File = BatFile.open_in "data/ProofCommitment.json" in
+  let t_string = BatIO.read_all t_File in
+  let t_json = Yojson.Basic.from_string t_string in
+  let t_listjson = Yojson.Basic.Util.to_list t_json in
   
+  let c_HatJson = List.nth t_listjson 0 in
+  let t3_Json = List.nth t_listjson 1 in
+  let t_HatJson = List.nth t_listjson 2 in
+  let t1_Json = List.nth t_listjson 3 in
+  let t2_Json = List.nth t_listjson 4 in
+  let t4_Json = List.nth t_listjson 5 in
+
   let cHatlistjson = Yojson.Basic.Util.to_list cHatJson in
   let cHatlist = toListOfElements cHatlistjson in
   let cHat = toVectorNBig cHatlist in
+
+  let c_Hatlistjson = Yojson.Basic.Util.to_list c_HatJson in
+  let c_Hatlist = toListOfElements c_Hatlistjson in
+  let c_Hat = toVectorNBig c_Hatlist in
+
+  Format.printf "c_hats: %d\n" (List.length c_Hatlist);
+  Format.printf "t_hats: %d\n" (List.length (Yojson.Basic.Util.to_list t_HatJson));
   
   let u = toVectorNString ["49964440712943942012241332230239226483129616590809179125936872319003088623925";
   "34498422718217623362205054529029401380959981060707433649221577095768461353190";
@@ -332,6 +361,17 @@ let _ =
   let ciphersA = Yojson.Basic.Util.to_list (List.nth ciphlistjson 0) in
   let ciphersB = Yojson.Basic.Util.to_list (List.nth ciphlistjson 1) in
   let ciphers = List.combine ciphersA ciphersB in
+
+  let cipherinFile = BatFile.open_in "data/CiphersIn.json" in
+  let ciphinstring = BatIO.read_all cipherinFile in
+  let ciphinjson = Yojson.Basic.from_string ciphinstring in
+  let ciphinlistjson = Yojson.Basic.Util.to_list ciphinjson in
+
+  let ciphersinA = Yojson.Basic.Util.to_list (List.nth ciphinlistjson 0) in
+  let ciphersinB = Yojson.Basic.Util.to_list (List.nth ciphinlistjson 1) in
+  let ciphersin = List.combine ciphersinA ciphersinB in
+
+  Format.printf "input ciphertexts: %d\n" (List.length ciphersin);
   
   let cipherOutFile = BatFile.open_in "Ciphertexts01.json" in
   let ciphOutstring = BatIO.read_all cipherOutFile in
@@ -341,6 +381,17 @@ let _ =
    let ciphersOutA = Yojson.Basic.Util.to_list (List.nth ciphOutlistjson 0) in
    let ciphersOutB = Yojson.Basic.Util.to_list (List.nth ciphOutlistjson 1) in
    let ciphersOut = List.combine ciphersOutA ciphersOutB in
+
+   let cipheroutFile = BatFile.open_in "data/CiphersOut.json" in
+   let ciphoutstring = BatIO.read_all cipheroutFile in
+   let ciphoutjson = Yojson.Basic.from_string ciphoutstring in
+   let ciphoutlistjson = Yojson.Basic.Util.to_list ciphoutjson in
+ 
+   let ciphersoutA = Yojson.Basic.Util.to_list (List.nth ciphoutlistjson 0) in
+   let ciphersoutB = Yojson.Basic.Util.to_list (List.nth ciphoutlistjson 1) in
+   let ciphersout = List.combine ciphersoutA ciphersoutB in
+
+   Format.printf "output ciphertexts: %d\n" (List.length ciphersout);
   
   Format.printf "%s\n" "Json loaded";
 
@@ -353,7 +404,7 @@ let _ =
   
   let statment = wikStatment pk h (Lib.hd h hs) hs c cHat u e e' in
   
-  Format.printf "%s\n" "Statment Prepared";
+  Format.printf "%s\n" "Statement Prepared";
   
   let rec toVectorNBaseJson = (fun i x ->
     match x with
@@ -373,13 +424,34 @@ let _ =
   let t4prim = Yojson.Basic.Util.to_list t4Json in
   let t4 = (jsonToBigint (List.nth t4prim 0), jsonToBigint (List.nth t4prim 1)) in
   let tHat = toVectorNJson (Yojson.Basic.Util.to_list tHatJson) in
-  
+
+  let t1_ = jsonToBigint (List.nth (Yojson.Basic.Util.to_list t1_Json) 0) in
+  let t2_ = jsonToBigint (List.nth (Yojson.Basic.Util.to_list t2_Json) 0) in
+  let t3_ = jsonToBigint (List.nth (Yojson.Basic.Util.to_list t3_Json) 0) in
+  let t4_prim = Yojson.Basic.Util.to_list t4_Json in
+  let t4_ = (jsonToBigint (List.nth t4_prim 0), jsonToBigint (List.nth t4_prim 1)) in
+  let t_Hat = toVectorNJson (Yojson.Basic.Util.to_list t_HatJson) in
+
+  Format.printf "t1: %s\n" (Big_int.string_of_big_int t1_);
+  Format.printf "t2: %s\n" (Big_int.string_of_big_int t2_);
+  Format.printf "t3: %s\n" (Big_int.string_of_big_int t3_);
+  Format.printf "t4_1: %s\n" (Big_int.string_of_big_int (jsonToBigint (List.nth t4_prim 0)));
+  Format.printf "t4_2: %s\n" (Big_int.string_of_big_int (jsonToBigint (List.nth t4_prim 1)));
+
   let com = Obj.magic ((t1,t2),((t3,t4),tHat)) in
   
   Format.printf "%s\n" "Commitment Prepared";
   Format.print_flush ();
   
   let chal = Big_int.big_int_of_string "0x7db6dd518c66f5cff401e30e5e23cdabfe554a0f9552606bf955e9136c0db17c" in
+
+  let chalFile = BatFile.open_in "data/challenge.json" in
+  let chalString = BatIO.read_all chalFile in
+  let chalJson = Yojson.Basic.from_string chalString in
+  let challistJson = Yojson.Basic.Util.to_list chalJson in
+  let chal_ = jsonToBigint (List.nth challistJson 0) in
+
+  Format.printf "challenge: %s\n" (Big_int.string_of_big_int chal_);
   
   let sFile = BatFile.open_in "PoSReply01.json" in
   let sString = BatIO.read_all sFile in
@@ -392,6 +464,18 @@ let _ =
   let s2Json = List.nth sListjson 3 in
   let sPrimeJson = List.nth sListjson 4 in
   let s4Json = List.nth sListjson 5 in
+
+  let s_File = BatFile.open_in "data/ProofReply.json" in
+  let s_String = BatIO.read_all s_File in
+  let s_Json = Yojson.Basic.from_string s_String in
+  let s_Listjson = Yojson.Basic.Util.to_list s_Json in
+  
+  let s3_Json = List.nth s_Listjson 0 in
+  let s_HatJson = List.nth s_Listjson 1 in
+  let s1_Json = List.nth s_Listjson 2 in
+  let s2_Json = List.nth s_Listjson 3 in
+  let s_PrimeJson = List.nth s_Listjson 4 in
+  let s4_Json = List.nth s_Listjson 5 in
   
   Format.printf "%s\n" "Getting ready to pass response";
   Format.print_flush ();
@@ -402,6 +486,20 @@ let _ =
   let s4 = jsonToBigint s4Json in
   let sHat = toVectorNJson (Yojson.Basic.Util.to_list sHatJson) in
   let sPrime = toVectorNJson (Yojson.Basic.Util.to_list sPrimeJson) in
+
+  let s1_ = jsonToBigint (List.nth (Yojson.Basic.Util.to_list s1_Json) 0) in
+  let s2_ = jsonToBigint (List.nth (Yojson.Basic.Util.to_list s2_Json) 0) in
+  let s3_ = jsonToBigint (List.nth (Yojson.Basic.Util.to_list s3_Json) 0) in
+  let s4_ = jsonToBigint (List.nth (Yojson.Basic.Util.to_list s4_Json) 0) in
+  let sHat_ = toVectorNJson (Yojson.Basic.Util.to_list sHatJson) in
+  let sPrime_ = toVectorNJson (Yojson.Basic.Util.to_list sPrimeJson) in
+
+  Format.printf "s1: %s\n" (Big_int.string_of_big_int s1_);
+  Format.printf "s2: %s\n" (Big_int.string_of_big_int s2_);
+  Format.printf "s3: %s\n" (Big_int.string_of_big_int s3_);
+  Format.printf "s4: %s\n" (Big_int.string_of_big_int s4_);
+  Format.printf "s_hats: %d\n" (List.length (Yojson.Basic.Util.to_list s_HatJson));
+  Format.printf "s_primes: %d\n" (List.length (Yojson.Basic.Util.to_list s_PrimeJson));
   
   let resp = Obj.magic ((s1, s2), (((sPrime, s3), s4), sHat))  in
   
