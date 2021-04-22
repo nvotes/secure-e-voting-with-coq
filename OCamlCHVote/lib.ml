@@ -3162,12 +3162,18 @@ module MVS = VectorSpaceModuleSameGroupInsIns(DualGroup)(HeliosIACR2018F)(DVS)
 module ES =
  BasicElGamal(HeliosIACR2018G)(HeliosIACR2018F)(HeliosIACR2018VS)(DualGroup)(DVS)(MVS)
 
+let rec intToNat = (fun i ->
+  match i with
+  | 0 -> O
+  | x -> S (intToNat (x-1))
+)
+
+
 module M =
  struct
   (** val coq_N : nat **)
 
-  let coq_N =
-    S O
+  let coq_N = intToNat 1
  end
 
 module ElGamalWikstrom =
