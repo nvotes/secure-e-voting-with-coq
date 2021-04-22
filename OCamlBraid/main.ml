@@ -1,12 +1,8 @@
 let _ =
 
-    (* At the moment we are being lazy and passing the data in directly, we need to switch more of it to external *)
-
   Format.printf "p = %s\n" (Big_int.string_of_big_int Lib.p);
   Format.printf "q = %s\n" (Big_int.string_of_big_int Lib.q);  
   
-  Format.printf "%s\n" "Loading data";
-
   let wikSigma = Lib.ElGamalWikstrom.coq_WikstromSigma in
   let wikStatment = Lib.ElGamalWikstrom.coq_WikstromStatment in
   
@@ -64,8 +60,9 @@ let _ =
 
   (* Transcript *)
 
-  Format.printf "%s\n" "* Loading data/pk.json";
+  Format.printf "%s\n" "Loading data";
   
+  Format.printf "%s\n" "* Loading data/pk.json";
   let pkFile = BatFile.open_in "data/pk.json" in 
   let pkstring = BatIO.read_all pkFile in
   let pkjson = Yojson.Basic.from_string pkstring in
@@ -80,7 +77,6 @@ let _ =
   let pk_ = (pkgen, pkval) in
 
   Format.printf "%s\n" "* Loading data/hs.json";
-
   let hFile = BatFile.open_in "data/hs.json" in
   let hstring = BatIO.read_all hFile in
   let hjson = Yojson.Basic.from_string hstring in
@@ -95,7 +91,6 @@ let _ =
   Format.printf "hs size = %d\n" (List.length hslist);
 
   Format.printf "%s\n" "* Loading data/us.json";
-
   let uFile = BatFile.open_in "data/us.json" in
   let ustring = BatIO.read_all uFile in
   let ujson = Yojson.Basic.from_string ustring in
@@ -106,7 +101,6 @@ let _ =
   Format.printf "us size = %d\n" (List.length ulist);
 
   Format.printf "%s\n" "* Loading data/PermutationCommitment.json";
-
   let c_File = BatFile.open_in "data/PermutationCommitment.json" in
   let c_string = BatIO.read_all c_File in
   let c_json = Yojson.Basic.from_string c_string in
@@ -117,7 +111,6 @@ let _ =
   Format.printf "cs size = %d\n" (List.length c_list);
 
   Format.printf "%s\n" "* Loading data/ProofCommitment.json";
-
   let t_File = BatFile.open_in "data/ProofCommitment.json" in
   let t_string = BatIO.read_all t_File in
   let t_json = Yojson.Basic.from_string t_string in
@@ -151,7 +144,6 @@ let _ =
   Format.printf "t_hats size = %d\n" (List.length (Yojson.Basic.Util.to_list t_HatJson));
   
   Format.printf "%s\n" "* Loading data/CiphersIn.json";
-  
   let cipherinFile = BatFile.open_in "data/CiphersIn.json" in
   let ciphinstring = BatIO.read_all cipherinFile in
   let ciphinjson = Yojson.Basic.from_string ciphinstring in
@@ -165,7 +157,6 @@ let _ =
   Format.printf "input ciphertexts size = %d\n" (List.length ciphersin);
   
   Format.printf "%s\n" "* Loading data/CiphersOut.json";
-
   let cipheroutFile = BatFile.open_in "data/CiphersOut.json" in
   let ciphoutstring = BatIO.read_all cipheroutFile in
   let ciphoutjson = Yojson.Basic.from_string ciphoutstring in
@@ -182,7 +173,6 @@ let _ =
   let e_' = toVectorNCiph ciphersout in
 
   Format.printf "%s\n" "* Loading data/challenge.json";
-
   let chalFile = BatFile.open_in "data/challenge.json" in
   let chalString = BatIO.read_all chalFile in
   let chalJson = Yojson.Basic.from_string chalString in
@@ -192,7 +182,6 @@ let _ =
   Format.printf "challenge = %s\n" (Big_int.string_of_big_int chal_);
 
   Format.printf "%s\n" "* Loading data/ProofReply.json";
-
   let s_File = BatFile.open_in "data/ProofReply.json" in
   let s_String = BatIO.read_all s_File in
   let s_Json = Yojson.Basic.from_string s_String in
@@ -206,7 +195,6 @@ let _ =
   let s4_Json = List.nth s_Listjson 5 in
 
   Format.printf "%s\n" "Data loaded";
-
   Format.print_flush ();
 
   (* let statment = wikStatment pk h (Lib.hd h hs) hs c cHat u e e' in *)
@@ -220,8 +208,6 @@ let _ =
   
   Format.printf "%s\n" "Commitment Prepared";
   Format.print_flush ();
-  
-  
   
   Format.printf "%s\n" "Getting ready to pass response";
   Format.print_flush ();
