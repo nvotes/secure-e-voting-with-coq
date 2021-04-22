@@ -5,4 +5,4 @@ compile : big.ml  lib.ml main.ml
 clean : 
 	rm -rf *.cmx *.cmi *.o a.out
 run : 
-	./a.out
+	./a.out data/transcript_braid.json
