@@ -224,5 +224,5 @@ let _ =
   
   let result = wikSigma.coq_V1 (((statement, com), chal_), resp) in
   
-  Format.printf "<<< Result ok = %b >>>\n" result;
+  Format.printf "<<< Result ok = %b for \'%s'>>>\n" result transcript_name;
   Format.print_flush ();
