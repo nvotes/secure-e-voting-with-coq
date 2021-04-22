@@ -10,7 +10,7 @@ Run with default (data/transcript_braid.json) data:
 
 Use
 
-./a.out <transcript.json>
+    ./a.out <transcript.json>
 
 to run with a user supplied json transcript file.
 
