@@ -22,4 +22,12 @@ from the braid root. Then copy the generated file, for example
 
     cp transcript_braid.json ../secure-e-voting-with-coq/OCamlBraid/data
 
-The p and q parameters have to be manually specified in lib.ml, main.ml will check for a mismatch and warn you.
+The p and q parameters, as well as the ciphertext count, have to be manually specified in lib.ml 
+
+    let p = ...
+
+    let q = ...
+
+    let ciphers = ...
+
+main.ml will check for a mismatch and warn you.

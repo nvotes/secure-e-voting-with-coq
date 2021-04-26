@@ -94,7 +94,7 @@ let _ =
   if not (Big.eq Lib.q transcript_q) then
     failwith "q prime mismatch";
 
-  Format.printf "%s\n" "* Loading pk";
+  (* Format.printf "%s\n" "* Loading pk"; *)
   let pklistjson = Yojson.Basic.Util.to_list pkjson in
   let pkgenjson = List.nth pklistjson 0 in
   let pkjson = List.nth pklistjson 1 in
@@ -104,29 +104,29 @@ let _ =
   Format.printf "pk = %s\n" (Big_int.string_of_big_int pkval);
   let pk_ = (pkgen, pkval) in
 
-  Format.printf "%s\n" "* Loading hs";
+  (* Format.printf "%s\n" "* Loading hs"; *)
   let hlistjson = Yojson.Basic.Util.to_list hjson in
   let hjson = List.nth (Yojson.Basic.Util.to_list (List.nth hlistjson 0)) 0 in
   let hsjson = Yojson.Basic.Util.to_list (List.nth hlistjson 1) in
   let hslist = toListOfElements hsjson in
   let hs_ = toVectorNBig hslist in
   let h_ = jsonToBigint hjson in
-  Format.printf "h = %s\n" (Big_int.string_of_big_int h_);
+  (* Format.printf "h = %s\n" (Big_int.string_of_big_int h_);
   Format.printf "hs size = %d\n" (List.length hslist);
 
-  Format.printf "%s\n" "* Loading us";
+  Format.printf "%s\n" "* Loading us"; *)
   let ulistjson = Yojson.Basic.Util.to_list ujson in
   let ulist = toListOfElements ulistjson in
   let u_ = toVectorNBig ulist in
-  Format.printf "us size = %d\n" (List.length ulist);
+  (* Format.printf "us size = %d\n" (List.length ulist);
 
-  Format.printf "%s\n" "* Loading permutation_commitment";
+  Format.printf "%s\n" "* Loading permutation_commitment"; *)
   let c_listjson = Yojson.Basic.Util.to_list c_json in
   let c_list = toListOfElements c_listjson in
   let c_ = toVectorNBig c_list in
-  Format.printf "cs size = %d\n" (List.length c_list);
+  (* Format.printf "cs size = %d\n" (List.length c_list);
 
-  Format.printf "%s\n" "* Loading proof_commitment";
+  Format.printf "%s\n" "* Loading proof_commitment"; *)
   let t_listjson = Yojson.Basic.Util.to_list t_json in
   let c_HatJson = List.nth t_listjson 0 in
   let t3_Json = List.nth t_listjson 1 in
@@ -144,7 +144,7 @@ let _ =
   let c_Hatlistjson = Yojson.Basic.Util.to_list c_HatJson in
   let c_Hatlist = toListOfElements c_Hatlistjson in
   let cHat_ = toVectorNBig c_Hatlist in
-  Format.printf "t1 = %s\n" (Big_int.string_of_big_int t1_);
+  (* Format.printf "t1 = %s\n" (Big_int.string_of_big_int t1_);
   Format.printf "t2 = %s\n" (Big_int.string_of_big_int t2_);
   Format.printf "t3 = %s\n" (Big_int.string_of_big_int t3_);
   Format.printf "t4_1 = %s\n" (Big_int.string_of_big_int (jsonToBigint (List.nth t4_prim 0)));
@@ -152,12 +152,12 @@ let _ =
   Format.printf "c_hats size = %d\n" (List.length c_Hatlist);
   Format.printf "t_hats size = %d\n" (List.length (Yojson.Basic.Util.to_list t_HatJson));
 
-  Format.printf "%s\n" "* Loading challenge";
+  Format.printf "%s\n" "* Loading challenge"; *)
   let challistJson = Yojson.Basic.Util.to_list chal_json in
   let chal_ = jsonToBigint (List.nth challistJson 0) in
   Format.printf "challenge = %s\n" (Big_int.string_of_big_int chal_);
 
-  Format.printf "%s\n" "* Loading proof_reply";
+  (* Format.printf "%s\n" "* Loading proof_reply"; *)
   let s_Listjson = Yojson.Basic.Util.to_list s_json in
   let s3_Json = List.nth s_Listjson 0 in
   let s_HatJson = List.nth s_Listjson 1 in
@@ -171,12 +171,12 @@ let _ =
   let s4_ = jsonToBigint (List.nth (Yojson.Basic.Util.to_list s4_Json) 0) in
   let sHat_ = toVectorNJson (Yojson.Basic.Util.to_list s_HatJson) in
   let sPrime_ = toVectorNJson (Yojson.Basic.Util.to_list s_PrimeJson) in
-  Format.printf "s1 = %s\n" (Big_int.string_of_big_int s1_);
+  (* Format.printf "s1 = %s\n" (Big_int.string_of_big_int s1_);
   Format.printf "s2 = %s\n" (Big_int.string_of_big_int s2_);
   Format.printf "s3 = %s\n" (Big_int.string_of_big_int s3_);
   Format.printf "s4 = %s\n" (Big_int.string_of_big_int s4_);
   Format.printf "s_hats size = %d\n" (List.length (Yojson.Basic.Util.to_list s_HatJson));
-  Format.printf "s_primes size = %d\n" (List.length (Yojson.Basic.Util.to_list s_PrimeJson));
+  Format.printf "s_primes size = %d\n" (List.length (Yojson.Basic.Util.to_list s_PrimeJson));*)
   
   Format.printf "%s\n" "* Loading ciphers_in";
   let ciphinlistjson = Yojson.Basic.Util.to_list ciphin_json in
@@ -184,7 +184,11 @@ let _ =
   let ciphersinA = Yojson.Basic.Util.to_list (List.nth ciphinlistjson 1) in
   let ciphersinB = Yojson.Basic.Util.to_list (List.nth ciphinlistjson 0) in
   let ciphersin = List.combine ciphersinA ciphersinB in
-  Format.printf "input ciphertexts size = %d\n" (List.length ciphersin);
+  let ciphers_count = List.length ciphersin in
+  Format.printf "input ciphertexts size = %d\n" (ciphers_count);
+
+  if (Lib.ciphers + 1) <> (List.length ciphersin) then
+    failwith "Cipher count mismatch";
   
   Format.printf "%s\n" "* Loading ciphers_out";
   let ciphoutlistjson = Yojson.Basic.Util.to_list ciphout_json in
@@ -199,13 +203,10 @@ let _ =
   Format.printf "%s\n" "Data loaded";
   Format.print_flush ();
 
-  (* let statment = wikStatment pk h (Lib.hd h hs) hs c cHat u e e' in *)
   let statement = wikStatment pk_ pkgen h_ hs_ c_ cHat_ u_ e_ e_' in
-  (* let statement = wikStatment pk_ pkgen (Lib.hd h_ hs_) hs_ c_ cHat_ u_ e_ e_' in *)
   
   Format.printf "%s\n" "Statement Prepared";
 
-  (* let com = Obj.magic ((t1,t2),((t3,t4),tHat)) in *)
   let com = Obj.magic ((t1_,t2_),((t3_,t4_),tHat_)) in
   
   Format.printf "%s\n" "Commitment Prepared";
@@ -214,9 +215,6 @@ let _ =
   Format.printf "%s\n" "Getting ready to pass response";
   Format.print_flush ();
 
-
-  
-  (* let resp = Obj.magic ((s1, s2), (((sPrime, s3), s4), sHat))  in*)
   let resp = Obj.magic ((s1_, s2_), (((sPrime_, s3_), s4_), sHat_))  in
   
   Format.printf "%s\n" "Transcript Prepared";
